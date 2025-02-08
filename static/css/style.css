@@ -1,0 +1,6 @@
+.cover {
+    background: url(/media/R.jfif);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}

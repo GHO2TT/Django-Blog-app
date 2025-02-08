@@ -1,0 +1,45 @@
+<nav class="navbar bg-dark border-bottom border-body navbar-expand-lg bg-body-tertiary fixed-top px-4" data-bs-theme="dark">
+
+
+
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'blog-index'%}">PostScribers</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse container-fluid" id="navbarSupportedContent">
+
+
+      {% if request.user.is_authenticated %}
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">Profile</a>
+        </li>
+        <li class="nav-item">
+
+          <form action="{% url 'users-logout' %}" method="post">
+            {% csrf_token %}
+          <button class="btn btn-primary btn-block w-100" type="submit">Logout</button></form>
+        </li>
+      </ul>
+
+      {% else %}
+      
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'sign-up' %}">SignUp</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'users-login' %}">Login</a>
+        </li>
+      </ul>
+
+      {% endif %}
+
+    </div>
+  </div>
+
+
+
+</nav>

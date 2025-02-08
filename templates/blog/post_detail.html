@@ -1,0 +1,103 @@
+{% extends 'partials/base.html'%}
+{% block title %}Post Details Page{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+
+
+
+<div class="container">
+    <div class="row mt-5 pt-3">
+
+
+        <div class="col-md-8 offset-md-2">
+            <div class="card my-3 shadow">
+               <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <img class="img-thumbnail" src="{{post.author.profilemodel.image.url}}" alt="profile-img">
+                    </div>
+
+                    <div class="col-md-8">
+                        <small>{{post.date_created }}</small>
+
+                        {% if post.author == request.user %} 
+                        <span class="float-end">
+                            <a class="btn btn-primary btn-sm " href="{% url 'blog-post-edit' post.id %}">Edit</a>
+                            <a class="btn btn-danger btn-sm " href="{% url 'blog-post-delete' post.id %}">Delete</a>
+                        </span>
+                        {% endif %}
+                        <hr>
+                        <h4>{{post.title}}</h4>
+                        <p>
+                            {{post.content}}
+                        </p>
+                    </div>
+
+
+
+                    <div class="accordion" id="accordionExample">
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              Comments : {{post.comment_count}}
+                            </button>
+                          </h2>
+                          <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div style="height: 250px; overflow-y:scroll" class="accordion-body">
+
+                              {% for comment in post.comment_set.all %}
+
+                              <div class="card my-3 shadow">
+                                <div class="card-body text-justify">
+                                  <span>{{ comment.user }}</span>
+                                  <hr>
+                                  <p>
+                                    {{ comment.content}}
+                                  </p>
+                                  {% if comment.user == request.user %} 
+                                  <form action="{% url 'comment-delete' post.id comment.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-danger btn-sm" type="submit" value="Delete Comment">
+                                </form>
+                                  {% else %}
+                                  {% endif %}
+                              </div>
+                              </div>
+
+                              {% endfor %}
+
+                            </div>
+                          </div>
+
+                          <form method="post">
+                            {% csrf_token %}
+                            {{ c_form| crispy }}
+                            <button class="btn btn-primary btn-sm" type="submit">Comment</button>
+                          </form>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+               </div>
+            </div>
+        </div>
+
+        
+
+
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
